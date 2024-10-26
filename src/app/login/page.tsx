@@ -1,14 +1,21 @@
-import { login, signup } from "./actions";
+"use client";
 
-export default function LoginPage() {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import RegisterForm from "./form";
+
+export default function RegisterPage() {
   return (
-    <form>
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
-      <label htmlFor="password">Password:</label>
-      <input id="password" name="password" type="password" required />
-      <button formAction={login}>Log in</button>
-      <button formAction={signup}>Sign up</button>
-    </form>
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-center text-gray-800">
+            Login
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RegisterForm />
+        </CardContent>
+      </Card>
+    </div>
   );
 }

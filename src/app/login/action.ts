@@ -1,31 +1,26 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { RegisterSchema } from "./register.schema";
+import { LoginSchema } from "./login.schema";
 
-export async function handleRegister(value: any) {
+export async function handleLogin(value: any) {
   try {
-    const parsedCredentials = RegisterSchema.safeParse(value);
+    const parsedCredentials = LoginSchema.safeParse(value);
     if (!parsedCredentials.success) {
       return { success: false, message: "Invalid data." };
     }
     const supabase = await createClient();
-    const { error, data } = await supabase.auth.signUp(parsedCredentials.data);
+    const { error } = await supabase.auth.signInWithPassword(
+      parsedCredentials.data
+    );
 
     if (error) {
       return { success: false, message: "" + error };
     }
 
-    if (!data.user?.confirmed_at) {
-      return {
-        success: true,
-        message: "Account created successfully but needs verification.",
-      };
-    }
-
     return {
       success: true,
-      message: "Account created successfully.",
+      message: "Login successful.",
     };
   } catch (error) {
     return {

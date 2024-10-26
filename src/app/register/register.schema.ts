@@ -1,9 +1,6 @@
 import { object, string } from "zod";
 
 export const RegisterSchema = object({
-  name: string({ required_error: "Name is required" })
-    .min(1, "Name is required.")
-    .max(50, "Name must be less than 50 characters"),
   email: string({ required_error: "Email is required" })
     .min(1, "Email is required.")
     .email("Invalid email"),

@@ -16,34 +16,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/input";
-import { RegisterSchema } from "./register.schema";
+import { LoginSchema } from "./login.schema";
 import ErrorMessage from "@/components/error-message";
 
 import { redirect, useRouter } from "next/navigation";
-import { handleRegister } from "./action";
+import { handleLogin } from "./action";
 
 export default function RegisterForm() {
   const router = useRouter();
   const [globalError, setGlobalError] = useState("");
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     try {
-      const result: ServerActionResponse = await handleRegister(values);
+      const result: ServerActionResponse = await handleLogin(values);
       if (result.success) {
-        if (result.message.includes("verification")) {
-          router.push("/auth/verify-request");
-        } else {
-          router.push("/dashboard");
-        }
+        router.push("/dashboard");
       } else {
         setGlobalError(result.message);
       }
@@ -57,11 +52,11 @@ export default function RegisterForm() {
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {["email", "password", "confirmPassword"].map((field) => (
+          {["email", "password"].map((field) => (
             <FormField
               control={form.control}
               key={field}
-              name={field as keyof z.infer<typeof RegisterSchema>}
+              name={field as keyof z.infer<typeof LoginSchema>}
               render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>
@@ -87,7 +82,7 @@ export default function RegisterForm() {
             />
           ))}
           <LoadingButton pending={form.formState.isSubmitting}>
-            Sign up
+            Login
           </LoadingButton>
         </form>
       </Form>
