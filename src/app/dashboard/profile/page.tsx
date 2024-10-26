@@ -14,7 +14,7 @@ export default async function Home() {
     where: { id: data.user.id },
   });
 
-  if (profile?.role !== "admin") {
+  if (profile?.role !== "user") {
     redirect("/");
   }
 
