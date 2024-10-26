@@ -21,6 +21,7 @@ import ErrorMessage from "@/components/error-message";
 
 import { redirect, useRouter } from "next/navigation";
 import { handleLogin } from "./action";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -84,6 +85,7 @@ export default function RegisterForm() {
           <LoadingButton pending={form.formState.isSubmitting}>
             Login
           </LoadingButton>
+          <Link href="/register">Register</Link>
         </form>
       </Form>
     </>
