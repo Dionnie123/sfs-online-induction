@@ -24,12 +24,15 @@ type TextInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Pick<ControllerProps<TFieldValues, TName>, "name" | "control" | "rules"> &
-  ComponentPropsWithoutRef<"input">;
+  ComponentPropsWithoutRef<"input"> & {
+    label?: string | ReactNode;
+  };
 
 export function TextInput<
   T extends FieldValues = FieldValues,
   U extends FieldPath<T> = FieldPath<T>
 >({
+  label,
   name,
   control,
   rules,
@@ -45,7 +48,11 @@ export function TextInput<
       key={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{name.charAt(0).toUpperCase() + name.slice(1)}</FormLabel>
+          <FormLabel className="space-y-1 leading-none">
+            {typeof label === "string"
+              ? label.charAt(0).toUpperCase() + label.slice(1) // Capitalize if it's a string
+              : name.charAt(0).toUpperCase() + name.slice(1)}
+          </FormLabel>
           <FormControl>
             <Input
               placeholder={
@@ -77,12 +84,15 @@ type TextAreaInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Pick<ControllerProps<TFieldValues, TName>, "name" | "control" | "rules"> &
-  ComponentPropsWithoutRef<"textarea">; // Change to textarea
+  ComponentPropsWithoutRef<"textarea"> & {
+    label?: string | ReactNode;
+  };
 
 export function TextAreaInput<
   T extends FieldValues = FieldValues,
   U extends FieldPath<T> = FieldPath<T>
 >({
+  label,
   name,
   control,
   rules,
@@ -98,7 +108,11 @@ export function TextAreaInput<
       key={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{name.charAt(0).toUpperCase() + name.slice(1)}</FormLabel>
+          <FormLabel className="space-y-1 leading-none">
+            {typeof label === "string"
+              ? label.charAt(0).toUpperCase() + label.slice(1) // Capitalize if it's a string
+              : name.charAt(0).toUpperCase() + name.slice(1)}
+          </FormLabel>
           <FormControl>
             <Textarea
               placeholder={`Enter ${

@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 import React from "react";
@@ -15,7 +20,13 @@ export default function Drawer() {
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side={"left"} className="p-0 bg-muted">
+      <SheetContent
+        side={"left"}
+        className="p-0 bg-muted"
+        aria-describedby="drawer"
+        aria-description="drawer"
+      >
+        <SheetTitle className="sr-only">Drawer</SheetTitle>
         <Sidebar />
       </SheetContent>
     </Sheet>
