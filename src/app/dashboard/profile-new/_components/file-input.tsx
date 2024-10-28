@@ -83,10 +83,10 @@ export function FileInput({ uid, url, size, onUpload }: AvatarProps) {
   };
 
   return (
-    <>
+    <div className="space-y-3">
       {avatarUrl ? (
         <Image
-          objectFit="cover"
+          objectFit="contain"
           width={size}
           height={size}
           src={avatarUrl}
@@ -121,6 +121,6 @@ export function FileInput({ uid, url, size, onUpload }: AvatarProps) {
           </FormItem>
         )}
       />
-    </>
+    </div>
   );
 }
