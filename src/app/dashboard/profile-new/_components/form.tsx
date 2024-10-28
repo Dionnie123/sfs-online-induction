@@ -79,6 +79,29 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     }
   };
 
+  const _onUpload = async (url: string) => {
+    try {
+      let newProfile;
+      if (profile === undefined) {
+        //  newProfile = await createProfileAction({ , avatarUrl: url});
+      } else {
+        newProfile = await updateProfileAction(profile.id, {
+          ...profile,
+          avatarUrl: url,
+        });
+      }
+
+      mutate(newProfile, false);
+      form.reset(newProfile);
+
+      if (onSubmit) {
+        onSubmit();
+      }
+    } catch (error) {
+      setGlobalError(`${error}`);
+    }
+  };
+
   return (
     <>
       {globalError && <ErrorMessage error={globalError} />}
@@ -90,13 +113,10 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           <TextInput key={x?.fullname} control={form.control} name="fullname" />
           <TextInput control={form.control} name="username" />
           <FileInput
-            uid={"fedsf"}
-            onUpload={(s) => {
-              form.setValue("avatarUrl", s);
-              alert(s);
-            }}
-            size={100}
-            url={"foo.mp3"}
+            uid={profile?.id}
+            onUpload={(s) => _onUpload(s)}
+            size={144}
+            url={form.getValues("avatarUrl")}
           />
           <LoadingButton pending={form.formState.isSubmitting}>
             {profile ? "Update" : "Create"}
