@@ -19,7 +19,7 @@ export default abstract class IBaseRepository<T, Z> {
     return this.modelClient.findMany(options);
   }
 
-  getOne(id: string): Promise<T | null> {
+  getOne(id: string): Promise<T | undefined> {
     return this.modelClient.findUnique({
       where: {
         id,

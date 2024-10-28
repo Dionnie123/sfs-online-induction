@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Todo } from "@prisma/client";
 import { DataTable } from "./datatable";
 import { columns } from "./columns";
-import { getAllTodosAction } from "@/actions/todo";
+import { getAllTodosAction } from "@/app/dashboard/todos/action";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

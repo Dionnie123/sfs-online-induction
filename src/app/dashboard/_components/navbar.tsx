@@ -5,14 +5,14 @@ import { createClient } from "@/utils/supabase/server";
 export default async function Navbar() {
   const supabase = await createClient();
 
-  const { data } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getUser();
 
   return (
     <nav className="flex justify-between items-center py-3 px-4 fixed top-0 left-0 right-0 z-50 bg-slate-100">
       <Link href="/" className="text-xl font-bold">
         Auth.js
       </Link>
-      {!data.session && (
+      {!data.user && (
         <div className="flex gap-2 justify-center">
           <Link href="/login">
             <Button variant="default">Login</Button>
@@ -22,7 +22,7 @@ export default async function Navbar() {
           </Link>
         </div>
       )}
-      {data.session && (
+      {data.user && (
         <div className="flex gap-2 justify-end">
           <Link href="/dashboard">
             <Button variant="default">Go to Dashboard</Button>

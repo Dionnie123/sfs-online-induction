@@ -10,9 +10,12 @@ import { mutate } from "swr";
 import { Todo } from "@prisma/client";
 import ErrorMessage from "@/components/error-message";
 
-import { createTodoAction, updateTodoAction } from "@/actions/todo";
+import {
+  createTodoAction,
+  updateTodoAction,
+} from "@/app/dashboard/todos/action";
 import { CheckboxInput, TextAreaInput, TextInput } from "@/lib/form-helpers";
-import { TodoSchema } from "../todo.schema";
+import { TodoSchema } from "../schema";
 
 type TodoFormProps = {
   todo?: Todo;

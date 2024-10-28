@@ -20,10 +20,15 @@ enum Role {
 }
 
 model Profile {
-  id    String @id @db.Uuid
-  role  Role   @default(user)
-  notes Note[]
-  todos Todo[]
+  id        String  @id @db.Uuid
+  role      Role    @default(user)
+  notes     Note[]
+  todos     Todo[]
+  email     String
+  username  String?
+  fullname  String?
+  avatarUrl String?
+  website   String?
 
   @@map("profile")
 }

@@ -16,7 +16,7 @@ export async function handleRegister(value: any) {
       return { success: false, message: "" + error };
     }
 
-    if (!data.user?.confirmed_at) {
+    if (data.user?.confirmed_at !== undefined) {
       return {
         success: true,
         message: "Account created successfully but needs verification.",

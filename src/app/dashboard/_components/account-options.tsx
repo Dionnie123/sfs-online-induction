@@ -23,8 +23,7 @@ export default function AccountOptions() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
+
         <LogoutButton />
       </DropdownMenuContent>
     </DropdownMenu>

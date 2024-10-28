@@ -1,17 +1,17 @@
 "use client";
 
-import { deleteTodoAction } from "@/app/dashboard/todos/action";
+import { deleteProfileAction } from "@/app/dashboard/profile-new/action";
 import React from "react";
 import { mutate } from "swr";
 
-export default function DeleteTodo({ id }: { id: string }) {
+export default function DeleteProfile({ id }: { id: string }) {
   const handleDelete = async () => {
     try {
-      /* await fetch(`/api/todos?id=${id}`, {
+      /* await fetch(`/api/profiles?id=${id}`, {
         method: "DELETE",
       }); */
-      await deleteTodoAction(id);
-      mutate("/api/todos");
+      await deleteProfileAction(id);
+      mutate("/api/profiles");
     } catch (error) {
       console.log("An unexpected error occurred. Please try again.");
     }

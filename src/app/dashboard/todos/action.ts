@@ -1,8 +1,8 @@
 "use server";
 
-import { TodoSchema } from "@/app/dashboard/todos/todo.schema";
+import { TodoSchema } from "@/app/dashboard/todos/schema";
 import prisma from "@/lib/db";
-import TodoRepository from "@/repositories/todo.repository";
+import TodoRepository from "@/app/dashboard/todos/repository";
 import { createClient } from "@/utils/supabase/server";
 import { Todo } from "@prisma/client";
 import { z } from "zod";
@@ -42,8 +42,8 @@ export async function getAllTodosAction(): Promise<Todo[]> {
 export async function createTodoAction(value: z.infer<typeof TodoSchema>) {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.auth.getSession();
-    const user = data.session?.user;
+    const { data } = await supabase.auth.getUser();
+    const user = data?.user;
     if (!user) {
       throw Error("Unauthenticated. Please login.");
     }
@@ -63,8 +63,8 @@ export async function updateTodoAction(
 ) {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.auth.getSession();
-    const user = data.session?.user;
+    const { data } = await supabase.auth.getUser();
+    const user = data?.user;
     if (!user) {
       throw Error("Unauthenticated. Please login.");
     }
@@ -78,8 +78,8 @@ export async function updateTodoAction(
 export async function deleteTodoAction(id: string) {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.auth.getSession();
-    const user = data.session?.user;
+    const { data } = await supabase.auth.getUser();
+    const user = data?.user;
     if (!user) {
       throw Error("Unauthenticated. Please login.");
     }

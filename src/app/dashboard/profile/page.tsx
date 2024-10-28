@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/utils/supabase/server";
+import AccountForm from "./account-form";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -18,10 +19,5 @@ export default async function Home() {
     redirect("/");
   }
 
-  return (
-    <main>
-      <h1 className="text-2xl text-center mb-8">Admin page</h1>
-      <pre>{JSON.stringify({ profile }, null, 4)}</pre>
-    </main>
-  );
+  return <AccountForm user={data.user} />;
 }

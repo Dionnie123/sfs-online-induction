@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate-dev": "npx prisma migrate dev && npx tsx src/lib/seedTriggers.ts"
+    "migrate-dev": "npx prisma db push --force-reset && npx tsx src/lib/seedTriggers.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
