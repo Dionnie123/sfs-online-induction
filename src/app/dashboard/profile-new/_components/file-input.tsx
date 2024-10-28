@@ -56,7 +56,8 @@ export function FileInput({ uid, url, size, onUpload }: AvatarProps) {
 
       const file = files[0];
       const fileExt = file.name.split(".").pop();
-      const filePath = `${uid}-${Math.random()}.${fileExt}`;
+      const fileName = file.name.split(".").slice(0, -1).join(".");
+      const filePath = `${fileName}-${uid}-${Math.random()}.${fileExt}`;
 
       if (avatarUrl != null) {
         if (!confirm("Replace Profile Picture?")) {
