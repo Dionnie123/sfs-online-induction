@@ -1,9 +1,8 @@
 import { z } from "zod";
-
-import IBaseRepository from "../../../repositories/base.repository.interface";
 import { Profile } from "@prisma/client";
-import { ProfileSchema } from "@/app/dashboard/profile-new/schema";
+import { ProfileSchema } from "@/app/dashboard/profile/schema";
 import prisma from "@/lib/db";
+import IBaseRepository from "@/repositories/base.repository.interface";
 
 export default class TodoRepository extends IBaseRepository<
   Profile,

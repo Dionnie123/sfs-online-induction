@@ -1,4 +1,4 @@
-import { boolean, object, string, z } from "zod";
+import { z } from "zod";
 import { imageSchema } from "./image.schema";
 
 const Role = z.enum(["user", "admin"]);

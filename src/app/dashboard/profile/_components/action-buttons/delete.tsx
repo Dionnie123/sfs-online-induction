@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteProfileAction } from "@/app/dashboard/profile-new/action";
+import { deleteProfileAction } from "@/app/dashboard/profile/action";
 import React from "react";
 import { mutate } from "swr";
 

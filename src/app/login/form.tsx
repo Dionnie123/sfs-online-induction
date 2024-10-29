@@ -52,7 +52,10 @@ export default function RegisterForm() {
     <>
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 flex flex-col justify-center align-middle"
+        >
           {["email", "password"].map((field) => (
             <FormField
               control={form.control}
@@ -85,7 +88,9 @@ export default function RegisterForm() {
           <LoadingButton pending={form.formState.isSubmitting}>
             Login
           </LoadingButton>
-          <Link href="/register">Register</Link>
+          <Link href="/register" className="text-center">
+            Register
+          </Link>
         </form>
       </Form>
     </>

@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Profile } from "@prisma/client";
 import { DataTable } from "./datatable";
 import { columns } from "./columns";
-import { getAllProfilesAction } from "@/app/dashboard/profile-new/action";
+import { getAllProfilesAction } from "@/app/dashboard/profile/action";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

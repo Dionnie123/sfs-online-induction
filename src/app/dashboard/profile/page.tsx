@@ -1,23 +1,32 @@
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
-import { createClient } from "@/utils/supabase/server";
-import AccountForm from "./account-form";
+"use client";
 
-export default async function Home() {
-  const supabase = await createClient();
+import useSWR from "swr";
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
+import { Profile } from "@prisma/client";
+import { getProfileAction } from "./action";
+import Loading from "@/components/loading";
+import ProfileForm from "./_components/form";
 
-  const profile = await prisma.profile.findUnique({
-    where: { id: data.user.id },
-  });
+export default function ProfilePage() {
+  const { data: profile, isLoading } = useSWR<Profile | undefined>(
+    "/api/profile",
+    getProfileAction
+  );
 
-  if (profile?.role !== "user") {
-    redirect("/");
-  }
-
-  return <AccountForm user={data.user} />;
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="flex flex-row justify-start align-middle  space-x-4">
+            <h1 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              Profile
+            </h1>
+          </div>
+          <ProfileForm profile={profile} />
+        </>
+      )}
+    </>
+  );
 }

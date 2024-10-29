@@ -20,9 +20,9 @@ import ErrorMessage from "@/components/error-message";
 import {
   createProfileAction,
   updateProfileAction,
-} from "@/app/dashboard/profile-new/action";
+} from "@/app/dashboard/profile/action";
 import { TextInput } from "@/lib/form-helpers";
-import { ProfileSchema } from "../schema";
+import { ProfileSchema } from "../../profile/schema";
 import { AvatarInput } from "./avatar-input";
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";

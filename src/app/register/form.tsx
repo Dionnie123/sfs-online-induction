@@ -57,7 +57,10 @@ export default function RegisterForm() {
     <>
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 flex flex-col"
+        >
           {["email", "password", "confirmPassword"].map((field) => (
             <FormField
               control={form.control}
@@ -90,7 +93,9 @@ export default function RegisterForm() {
           <LoadingButton pending={form.formState.isSubmitting}>
             Sign up
           </LoadingButton>
-          <Link href="/login">Login</Link>
+          <Link href="/login" className="text-center">
+            Login
+          </Link>
         </form>
       </Form>
     </>

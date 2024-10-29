@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import ProfileRepository from "@/app/dashboard/profile-new/repository";
+import ProfileRepository from "@/app/dashboard/profile/repository";
 import { createClient } from "@/utils/supabase/server";
 import { Profile } from "@prisma/client";
 import { z } from "zod";
