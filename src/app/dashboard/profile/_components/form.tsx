@@ -26,6 +26,7 @@ import { ProfileSchema } from "../../profile/schema";
 import { AvatarInput } from "./avatar-input";
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
+import { cache } from "swr/_internal";
 
 type ProfileFormProps = {
   profile?: Profile;
@@ -73,7 +74,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           avatarFile: undefined,
         });
       }
-
+      cache.delete("/api/profile");
       mutate(newProfile, false);
       form.reset(newProfile);
 

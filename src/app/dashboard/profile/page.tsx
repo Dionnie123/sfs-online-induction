@@ -24,7 +24,7 @@ export default function ProfilePage() {
               Profile
             </h1>
           </div>
-          <ProfileForm profile={profile} />
+          <ProfileForm key={"" + profile} profile={profile} />
         </>
       )}
     </>

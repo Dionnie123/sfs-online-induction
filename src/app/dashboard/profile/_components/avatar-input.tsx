@@ -79,6 +79,8 @@ export function AvatarInput<
           <FormControl>
             <Avatar
               onError={() => setImageSource(fallBackImage)}
+              emptyLabel=""
+              loadingLabel={"Loading Image..."}
               changeLabel={"Upload Image"}
               onChange={(uploadedFile) => {
                 setFile(uploadedFile);
