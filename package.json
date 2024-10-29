@@ -10,6 +10,7 @@
     "migrate-dev": "npx prisma db push --force-reset && npx tsx src/lib/seedTriggers.ts"
   },
   "dependencies": {
+    "@files-ui/react": "^1.2.4",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.21.1",
     "@radix-ui/react-checkbox": "^1.1.2",

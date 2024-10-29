@@ -27,6 +27,7 @@ import { ProfileSchema } from "../schema";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { FileInput } from "./file-input";
+import { FileInputV2 } from "./file-input-v2";
 
 type ProfileFormProps = {
   profile?: Profile;
@@ -38,34 +39,31 @@ type FormSchema = z.infer<typeof ProfileSchema>;
 export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
   const [globalError, setGlobalError] = useState<string>("");
 
-  const {
-    data: x,
-    error,
-    isLoading,
-    isValidating,
-  } = useSWR<Profile | undefined>("/api/profile", getProfileAction);
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues: x
+    defaultValues: profile
       ? {
-          id: x?.id,
-          email: x?.email,
-          fullname: x?.fullname,
-          role: x?.role,
-          username: x?.username,
-          avatarUrl: x?.avatarUrl,
+          id: profile?.id,
+          email: profile?.email,
+          fullname: profile?.fullname,
+          role: profile?.role,
+          username: profile?.username,
+          avatarUrl: profile?.avatarUrl,
         }
       : undefined,
   });
 
   const _onSubmit = async (values: FormSchema) => {
+    console.log(values.avatarFile);
     try {
       let newProfile;
       if (profile === undefined) {
         newProfile = await createProfileAction(values);
       } else {
-        newProfile = await updateProfileAction(profile.id, values);
+        newProfile = await updateProfileAction(profile.id, {
+          ...values,
+          avatarFile: undefined,
+        });
       }
 
       mutate(newProfile, false);
@@ -93,7 +91,6 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
 
       mutate(newProfile, false);
       form.reset(newProfile);
-
       if (onSubmit) {
         onSubmit();
       }
@@ -107,10 +104,20 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-8">
+          <FileInputV2
+            control={form.control}
+            name="avatarFile"
+            url={form.getValues("avatarUrl")}
+          />
           <TextInput control={form.control} name="id" />
           <TextInput control={form.control} name="email" />
+
           <TextInput control={form.control} name="avatarUrl" />
-          <TextInput key={x?.fullname} control={form.control} name="fullname" />
+          <TextInput
+            key={profile?.fullname}
+            control={form.control}
+            name="fullname"
+          />
           <TextInput control={form.control} name="username" />
           <FileInput
             uid={profile?.id}

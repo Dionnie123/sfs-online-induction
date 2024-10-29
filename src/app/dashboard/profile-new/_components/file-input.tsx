@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Dropzone, FileMosaic, Avatar } from "@files-ui/react";
 
 type AvatarProps = {
   uid: string | null | undefined;
@@ -105,18 +106,32 @@ export function FileInput({ uid, url, size, onUpload }: AvatarProps) {
         render={({ field: { value, onChange, ...fieldProps } }) => (
           <FormItem>
             <FormLabel>Picture</FormLabel>
-            <Card className="px-4 py-2 rounded-md shadow-none text-sm">
-              <p>{url ?? avatarUrl}</p>
-            </Card>
-            <FormControl>
-              <Input
-                {...fieldProps}
-                placeholder="Picture"
-                type="file"
-                accept="image/*, application/pdf"
-                onChange={uploadAvatar}
-              />
-            </FormControl>
+            <Avatar
+              onChange={(s) => {}}
+              src={
+                "https://i.pinimg.com/564x/9a/8b/cf/9a8bcfaba81783eff9241538b00343b1.jpg"
+              }
+              alt="Isabella"
+            />
+            <div className="relative ">
+              <Card className="px-4 py-2 rounded-md shadow-none text-sm mb-2">
+                <p>{avatarUrl ?? url ?? "Uploaded files here..."}</p>
+              </Card>
+              {uploading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 rounded-md">
+                  <span className="text-white">Uploading...</span>
+                </div>
+              )}
+              <FormControl>
+                <Input
+                  {...fieldProps}
+                  placeholder="Picture"
+                  type="file"
+                  accept="image/*, application/pdf"
+                  onChange={uploadAvatar}
+                />
+              </FormControl>
+            </div>{" "}
             <FormMessage />
           </FormItem>
         )}

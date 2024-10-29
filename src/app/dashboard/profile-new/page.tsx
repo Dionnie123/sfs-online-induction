@@ -12,7 +12,11 @@ export default function ProfilePage() {
     error,
     isLoading,
     isValidating,
-  } = useSWR<Profile | undefined>("/api/profile", getProfileAction);
+  } = useSWR<Profile | undefined>("/api/profile", getProfileAction, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 
   return (
     <>
