@@ -15,6 +15,8 @@ import {
   useState,
 } from "react";
 import { FieldValues, FieldPath, ControllerProps } from "react-hook-form";
+import useSWR from "swr";
+import { cache, mutate } from "swr/_internal";
 
 type FileInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -25,40 +27,23 @@ type FileInputProps<
     url?: string | null;
   };
 
-const fallBackImage = "/avatar.jpg";
+export async function fetchImage(path: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase.storage.from("avatars").download(path);
+  if (error) throw error;
+  console.log(URL.createObjectURL(data));
+  return URL.createObjectURL(data);
+}
 
 export function AvatarInput<
   T extends FieldValues = FieldValues,
   U extends FieldPath<T> = FieldPath<T>
 >({ url, label, name, control, rules, ...rest }: FileInputProps<T, U>) {
-  const supabase = createClient();
-  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
-
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    async function downloadImage(path: string) {
-      setLoading(true);
-
-      try {
-        const { data, error } = await supabase.storage
-          .from("avatars")
-          .download(path);
-        if (error) {
-          throw error;
-        }
-
-        const url = URL.createObjectURL(data);
-        setFileUrl(url);
-      } catch (error) {
-        console.log("Error downloading image: ", error);
-      }
-
-      setLoading(false);
-    }
-
-    if (url) downloadImage(url);
-  }, [url, supabase]);
+  const { data: initialFileUrl, isLoading } = useSWR(
+    url ? url : null,
+    url ? () => fetchImage(url!) : null
+  );
+  const [fileUrl, setFileUrl] = useState<string | undefined>(initialFileUrl);
 
   return (
     <FormField
@@ -74,21 +59,21 @@ export function AvatarInput<
           </FormLabel>
 
           <FormControl>
-            {!loading ? (
-              <Avatar
-                emptyLabel=""
-                loadingLabel={"Loading Image..."}
-                changeLabel={"Upload Image"}
-                onChange={(uploadedFile) => {
-                  setFileUrl(URL.createObjectURL(uploadedFile));
-                  field.onChange(uploadedFile);
-                  field.onBlur();
-                }}
-                src={fileUrl}
-              />
-            ) : (
-              <div style={{ width: 200, height: 200 }}></div>
-            )}
+            <Avatar
+              key={fileUrl}
+              emptyLabel=""
+              loadingLabel="Loading Image..."
+              changeLabel="Upload Image"
+              onChange={(uploadedFile) => {
+                const newImageURL = URL.createObjectURL(uploadedFile);
+                setFileUrl(newImageURL); // Update the local state with the new image URL
+                mutate(newImageURL);
+                field.onChange(uploadedFile);
+                field.onBlur();
+              }}
+              src={fileUrl ?? initialFileUrl}
+              style={{ width: "200px", height: "200px", background: "grey" }}
+            />
           </FormControl>
 
           <FormMessage />

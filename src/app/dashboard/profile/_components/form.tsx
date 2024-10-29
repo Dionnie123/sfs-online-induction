@@ -74,8 +74,8 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           avatarFile: undefined,
         });
       }
-      cache.delete("/api/profile");
-      mutate(newProfile, false);
+      //   cache.delete("/api/profile");
+      mutate("/api/profile", newProfile, false);
       form.reset(newProfile);
 
       if (onSubmit) {
