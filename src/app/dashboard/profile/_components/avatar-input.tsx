@@ -33,13 +33,8 @@ export function AvatarInput<
 >({ url, label, name, control, rules, ...rest }: FileInputProps<T, U>) {
   const supabase = createClient();
   const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
-  const [file, setFile] = useState<File | null>(null); // State to hold the file object
 
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const [imageSource, setImageSource] = React.useState<
-    AvatarProps["src"] | undefined
-  >("/broken/url");
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function downloadImage(path: string) {
@@ -79,20 +74,21 @@ export function AvatarInput<
           </FormLabel>
 
           <FormControl>
-            <Avatar
-              isLoading={loading}
-              onError={() => setImageSource(fallBackImage)}
-              emptyLabel=""
-              loadingLabel={"Loading Image..."}
-              changeLabel={"Upload Image"}
-              onChange={(uploadedFile) => {
-                setFile(uploadedFile);
-                setFileUrl(URL.createObjectURL(uploadedFile));
-                field.onChange(uploadedFile);
-                field.onBlur();
-              }}
-              src={fileUrl}
-            />
+            {!loading ? (
+              <Avatar
+                emptyLabel=""
+                loadingLabel={"Loading Image..."}
+                changeLabel={"Upload Image"}
+                onChange={(uploadedFile) => {
+                  setFileUrl(URL.createObjectURL(uploadedFile));
+                  field.onChange(uploadedFile);
+                  field.onBlur();
+                }}
+                src={fileUrl}
+              />
+            ) : (
+              <div style={{ width: 200, height: 200 }}></div>
+            )}
           </FormControl>
 
           <FormMessage />
