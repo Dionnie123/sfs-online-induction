@@ -19,15 +19,13 @@ import ErrorMessage from "@/components/error-message";
 
 import {
   createProfileAction,
-  getProfileAction,
   updateProfileAction,
 } from "@/app/dashboard/profile-new/action";
-import { CheckboxInput, TextAreaInput, TextInput } from "@/lib/form-helpers";
+import { TextInput } from "@/lib/form-helpers";
 import { ProfileSchema } from "../schema";
+import { AvatarInput } from "./avatar-input";
+import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { FileInput } from "./file-input";
-import { FileInputV2 } from "./file-input-v2";
 
 type ProfileFormProps = {
   profile?: Profile;
@@ -43,23 +41,33 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     resolver: zodResolver(ProfileSchema),
     defaultValues: profile
       ? {
-          id: profile?.id,
-          email: profile?.email,
           fullname: profile?.fullname,
-          role: profile?.role,
           username: profile?.username,
-          avatarUrl: profile?.avatarUrl,
         }
       : undefined,
   });
 
   const _onSubmit = async (values: FormSchema) => {
-    console.log(values.avatarFile);
     try {
       let newProfile;
       if (profile === undefined) {
         newProfile = await createProfileAction(values);
       } else {
+        if (values.avatarFile !== undefined) {
+          const supabase = createClient();
+          const file = values.avatarFile;
+          const fileExt = file?.name.split(".").pop();
+          const filePath = `${profile.id}-${Math.random()}.${fileExt}`;
+          const { error: uploadError } = await supabase.storage
+            .from("avatars")
+            .upload(filePath, file);
+
+          if (uploadError) {
+            setGlobalError(`${uploadError}`);
+          }
+          values.avatarUrl = filePath;
+        }
+
         newProfile = await updateProfileAction(profile.id, {
           ...values,
           avatarFile: undefined,
@@ -77,54 +85,29 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     }
   };
 
-  const _onUpload = async (url: string) => {
-    try {
-      let newProfile;
-      if (profile === undefined) {
-        //  newProfile = await createProfileAction({ , avatarUrl: url});
-      } else {
-        newProfile = await updateProfileAction(profile.id, {
-          ...profile,
-          avatarUrl: url,
-        });
-      }
-
-      mutate(newProfile, false);
-      form.reset(newProfile);
-      if (onSubmit) {
-        onSubmit();
-      }
-    } catch (error) {
-      setGlobalError(`${error}`);
-    }
-  };
-
   return (
     <>
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-8">
-          <FileInputV2
+          <AvatarInput
+            label="Profile image"
             control={form.control}
             name="avatarFile"
-            url={form.getValues("avatarUrl")}
+            url={profile?.avatarUrl}
           />
-          <TextInput control={form.control} name="id" />
-          <TextInput control={form.control} name="email" />
+          <FormItem>
+            <FormLabel className="space-y-1 leading-none">Email</FormLabel>
+            <Input readOnly disabled value={profile?.email} />
+          </FormItem>
 
-          <TextInput control={form.control} name="avatarUrl" />
           <TextInput
+            label="Full name"
             key={profile?.fullname}
             control={form.control}
             name="fullname"
           />
           <TextInput control={form.control} name="username" />
-          <FileInput
-            uid={profile?.id}
-            onUpload={(s) => _onUpload(s)}
-            size={144}
-            url={form.getValues("avatarUrl")}
-          />
           <LoadingButton pending={form.formState.isSubmitting}>
             {profile ? "Update" : "Create"}
           </LoadingButton>

@@ -11,7 +11,7 @@ const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png"];
 const imageSchema = z.union([
   z.instanceof(File).superRefine((f, ctx) => {
     // Validate mime type
-    console.log("FUCK!!");
+
     if (!ACCEPTED_MIME_TYPES.includes(f.type)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

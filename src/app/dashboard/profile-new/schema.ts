@@ -4,9 +4,9 @@ import { imageSchema } from "./image.schema";
 const Role = z.enum(["user", "admin"]);
 
 export const ProfileSchema = z.object({
-  id: z.string().uuid("Invalid UUID format"),
+  id: z.string().uuid("Invalid UUID format").optional().nullable(),
   role: Role.optional().default("user"),
-  email: z.string().email("Invalid email format"),
+  email: z.string().email("Invalid email format").optional().nullable(),
   username: z.string().optional().nullable(),
   fullname: z.string().optional().nullable(),
   avatarUrl: z.string().optional().nullable(),

@@ -6,7 +6,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
-import { Avatar } from "@files-ui/react";
+import { Avatar, AvatarProps } from "@files-ui/react";
+import React from "react";
 import {
   ComponentPropsWithoutRef,
   ReactNode,
@@ -24,7 +25,9 @@ type FileInputProps<
     url?: string | null;
   };
 
-export function FileInputV2<
+const fallBackImage = "/avatar.jpg";
+
+export function AvatarInput<
   T extends FieldValues = FieldValues,
   U extends FieldPath<T> = FieldPath<T>
 >({ url, label, name, control, rules, ...rest }: FileInputProps<T, U>) {
@@ -32,8 +35,15 @@ export function FileInputV2<
   const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<File | null>(null); // State to hold the file object
 
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [imageSource, setImageSource] = React.useState<
+    AvatarProps["src"] | undefined
+  >("/broken/url");
+
   useEffect(() => {
     async function downloadImage(path: string) {
+      setLoading(true);
       try {
         const { data, error } = await supabase.storage
           .from("avatars")
@@ -47,6 +57,7 @@ export function FileInputV2<
       } catch (error) {
         console.log("Error downloading image: ", error);
       }
+      setLoading(false);
     }
 
     if (url) downloadImage(url);
@@ -57,7 +68,7 @@ export function FileInputV2<
       control={control}
       name={name}
       key={name}
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <FormItem>
           <FormLabel className="space-y-1 leading-none">
             {typeof label === "string"
@@ -67,11 +78,12 @@ export function FileInputV2<
 
           <FormControl>
             <Avatar
-              changeLabel={"Upload Avatar"}
+              onError={() => setImageSource(fallBackImage)}
+              changeLabel={"Upload Image"}
               onChange={(uploadedFile) => {
-                setFile(uploadedFile); // Set the file object
-                field.onChange(uploadedFile); // Pass the file to React Hook Form
-                setFileUrl(URL.createObjectURL(uploadedFile)); // Update preview
+                setFile(uploadedFile);
+                setFileUrl(URL.createObjectURL(uploadedFile));
+                field.onChange(uploadedFile);
                 field.onBlur();
               }}
               src={fileUrl}
