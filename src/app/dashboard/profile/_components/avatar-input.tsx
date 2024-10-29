@@ -68,10 +68,8 @@ export function AvatarInput<
               changeLabel="Upload Image"
               onChange={(uploadedFile) => {
                 const newImageURL = URL.createObjectURL(uploadedFile);
-                setFileUrl(newImageURL); // Update the local state with the new image URL
-                mutate(newImageURL);
+                setFileUrl(newImageURL);
                 field.onChange(uploadedFile);
-                field.onBlur();
               }}
               src={
                 isLoading && !fileUrl
