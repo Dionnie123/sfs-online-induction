@@ -44,6 +44,7 @@ export function AvatarInput<
   useEffect(() => {
     async function downloadImage(path: string) {
       setLoading(true);
+
       try {
         const { data, error } = await supabase.storage
           .from("avatars")
@@ -57,6 +58,7 @@ export function AvatarInput<
       } catch (error) {
         console.log("Error downloading image: ", error);
       }
+
       setLoading(false);
     }
 
@@ -78,6 +80,7 @@ export function AvatarInput<
 
           <FormControl>
             <Avatar
+              isLoading={loading}
               onError={() => setImageSource(fallBackImage)}
               emptyLabel=""
               loadingLabel={"Loading Image..."}

@@ -4,7 +4,7 @@ import { ProfileSchema } from "@/app/dashboard/profile/schema";
 import prisma from "@/lib/db";
 import IBaseRepository from "@/repositories/base.repository.interface";
 
-export default class TodoRepository extends IBaseRepository<
+export default class ProfileRepository extends IBaseRepository<
   Profile,
   z.infer<typeof ProfileSchema>
 > {
