@@ -45,8 +45,7 @@ export function AvatarInput<
     error,
   } = useSWR(url ? url : null, url ? () => fetchImage(url!) : null);
   const [fileUrl, setFileUrl] = useState<string | undefined>(initialFileUrl);
-  const fallBackImage =
-    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+  const fallBackImage = "/avatar.jpg";
   return (
     <FormField
       control={control}
@@ -76,8 +75,8 @@ export function AvatarInput<
               }}
               src={
                 isLoading && !fileUrl
-                  ? "/avatar.jpg"
-                  : fileUrl ?? initialFileUrl ?? "/avatar.jpg"
+                  ? fallBackImage
+                  : fileUrl ?? initialFileUrl ?? fallBackImage
               }
               style={{ width: "200px", height: "200px", background: "grey" }}
             />
