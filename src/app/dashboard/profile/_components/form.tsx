@@ -16,7 +16,7 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Profile } from "@prisma/client";
 import ErrorMessage from "@/components/error-message";
-
+import { FileObject } from "@supabase/storage-js";
 import {
   createProfileAction,
   updateProfileAction,
@@ -50,21 +50,34 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
 
   const _onSubmit = async (values: FormSchema) => {
     try {
+      const supabase = createClient();
       let newProfile;
       if (profile === undefined) {
         newProfile = await createProfileAction(values);
       } else {
-        if (values.avatarFile !== undefined) {
-          const supabase = createClient();
+        if (values.avatarFile) {
+          console.log("DELETE!!!" + profile.avatarUrl);
+          if (profile.avatarUrl) {
+            const { data, error: deleteError } = await supabase.storage
+              .from("avatars")
+              .remove([`${profile.avatarUrl}`]);
+            if (deleteError) {
+              throw Error(`${deleteError}`);
+            }
+          }
+
           const file = values.avatarFile;
           const fileExt = file?.name.split(".").pop();
-          const filePath = `${profile.id}-${Math.random()}.${fileExt}`;
+          const filePath = `${profile.id}.${Date.now()}.${fileExt}`;
           const { error: uploadError } = await supabase.storage
             .from("avatars")
-            .upload(filePath, file);
+            .upload(filePath, file, {
+              cacheControl: "3600",
+              upsert: true,
+            });
 
           if (uploadError) {
-            setGlobalError(`${uploadError}`);
+            throw Error(`${uploadError}`);
           }
           values.avatarUrl = filePath;
         }
