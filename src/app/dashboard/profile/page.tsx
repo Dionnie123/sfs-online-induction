@@ -10,14 +10,7 @@ import ProfileForm from "./_components/form";
 export default function ProfilePage() {
   const { data: profile, isLoading } = useSWR<Profile | undefined>(
     "/api/profile",
-    getProfileAction,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshWhenOffline: false,
-      refreshWhenHidden: false,
-      refreshInterval: 0,
-    }
+    getProfileAction
   );
 
   return (
@@ -31,7 +24,7 @@ export default function ProfilePage() {
               Profile
             </h1>
           </div>
-          <ProfileForm key={"" + profile} profile={profile} />
+          <ProfileForm profile={profile} />
         </>
       )}
     </>

@@ -25,10 +25,8 @@ model Profile {
   notes     Note[]
   todos     Todo[]
   email     String
-  username  String?
   fullname  String?
   avatarUrl String?
-  website   String?
 
   @@map("profile")
 }

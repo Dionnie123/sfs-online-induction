@@ -43,7 +43,6 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     defaultValues: profile
       ? {
           fullname: profile?.fullname,
-          username: profile?.username,
         }
       : undefined,
   });
@@ -99,16 +98,12 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     }
   };
 
-  const fallBackImage =
-    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
-
   return (
     <>
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-8">
           <AvatarInput
-            onError={() => fallBackImage}
             label="Profile image"
             control={form.control}
             name="avatarFile"
@@ -125,7 +120,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
             control={form.control}
             name="fullname"
           />
-          <TextInput control={form.control} name="username" />
+
           <LoadingButton pending={form.formState.isSubmitting}>
             {profile ? "Update" : "Create"}
           </LoadingButton>

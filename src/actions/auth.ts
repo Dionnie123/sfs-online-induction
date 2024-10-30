@@ -29,3 +29,21 @@ export const getProfileAction = async (): Promise<Profile | null> => {
     return null;
   }
 };
+
+export const getProfileActionId = async (
+  id: string
+): Promise<Profile | null> => {
+  try {
+    if (id) {
+      const profile = await prisma.profile.findUnique({
+        where: { id: id },
+      });
+
+      return profile;
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
