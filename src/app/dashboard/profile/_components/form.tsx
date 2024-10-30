@@ -42,7 +42,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     resolver: zodResolver(ProfileSchema),
     defaultValues: profile
       ? {
-          fullname: profile?.fullname,
+          fullname: profile?.fullname ?? "",
         }
       : undefined,
   });
@@ -111,7 +111,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           />
           <FormItem>
             <FormLabel className="space-y-1 leading-none">Email</FormLabel>
-            <Input readOnly disabled value={profile?.email} />
+            <Input readOnly disabled value={profile?.email ?? ""} />
           </FormItem>
 
           <TextInput
