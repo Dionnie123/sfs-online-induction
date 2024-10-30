@@ -16,7 +16,7 @@ export default function CoursePage() {
   return (
     <div className="p-6 max-w-3xl mx-auto">
       {/* Hero Section */}
-      <div className="relative h-64 w-full mb-8">
+      {/* <div className="relative h-64 w-full mb-8">
         <Image
           src="/path-to-hero-image.jpg"
           alt="Hero Image"
@@ -24,7 +24,7 @@ export default function CoursePage() {
           objectFit="cover"
           className="rounded-lg"
         />
-      </div>
+      </div> */}
 
       {/* Title and Description */}
       <h1 className="text-4xl font-bold mb-2">Course Title</h1>
