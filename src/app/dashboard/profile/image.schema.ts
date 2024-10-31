@@ -34,6 +34,7 @@ const ImageSchema = z.union([
     }
   }),
   z.null(),
+  z.undefined(), // Allow undefined for optional file
 ]);
 
 // You can also use z.null() if you want to allow null as well:
