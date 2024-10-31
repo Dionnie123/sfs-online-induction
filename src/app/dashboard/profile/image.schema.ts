@@ -33,6 +33,7 @@ const imageSchema = z.union([
       });
     }
   }),
+  z.null(),
   z.undefined(), // Allow undefined for optional file
 ]);
 

@@ -15,16 +15,15 @@ export default function CoursePage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      {/* Hero Section */}
-      {/* <div className="relative h-64 w-full mb-8">
+      <div className="relative h-64 w-full mb-8">
         <Image
-          src="/path-to-hero-image.jpg"
+          src="https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Hero Image"
           layout="fill"
           objectFit="cover"
           className="rounded-lg"
         />
-      </div> */}
+      </div>
 
       {/* Title and Description */}
       <h1 className="text-4xl font-bold mb-2">Course Title</h1>

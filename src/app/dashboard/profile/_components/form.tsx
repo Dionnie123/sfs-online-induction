@@ -1,22 +1,14 @@
 "use client";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import LoadingButton from "@/components/loading-button";
 import { useState } from "react";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import { Profile } from "@prisma/client";
 import ErrorMessage from "@/components/error-message";
-import { FileObject } from "@supabase/storage-js";
 import {
   createProfileAction,
   updateProfileAction,
@@ -26,7 +18,7 @@ import { ProfileSchema } from "../../profile/schema";
 import { AvatarInput } from "./avatar-input";
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
-import { cache } from "swr/_internal";
+import { supabaseUpdateFile } from "@/lib/supabase-file-updater";
 
 type ProfileFormProps = {
   profile?: Profile;
@@ -54,39 +46,22 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       if (profile === undefined) {
         newProfile = await createProfileAction(values);
       } else {
-        if (values.avatarFile) {
-          console.log("DELETE!!!" + profile.avatarUrl);
-          if (profile.avatarUrl) {
-            const { data, error: deleteError } = await supabase.storage
-              .from("avatars")
-              .remove([`${profile.avatarUrl}`]);
-            if (deleteError) {
-              throw Error(`${deleteError}`);
-            }
-          }
+        const { fileUrl } = await supabaseUpdateFile({
+          supabase: supabase,
+          bucket: "avatars",
+          recordId: profile.id,
+          newFile: values.avatarFile ?? null,
+          oldFileNameOnly: profile.avatarUrl,
+        });
 
-          const file = values.avatarFile;
-          const fileExt = file?.name.split(".").pop();
-          const filePath = `${profile.id}.${Date.now()}.${fileExt}`;
-          const { error: uploadError } = await supabase.storage
-            .from("avatars")
-            .upload(filePath, file, {
-              cacheControl: "3600",
-              upsert: true,
-            });
-
-          if (uploadError) {
-            throw Error(`${uploadError}`);
-          }
-          values.avatarUrl = filePath;
-        }
+        values.avatarUrl = fileUrl;
 
         newProfile = await updateProfileAction(profile.id, {
-          ...values,
-          avatarFile: undefined,
+          avatarUrl: values.avatarUrl,
+          fullname: values.fullname,
         });
       }
-      //   cache.delete("/api/profile");
+
       mutate("/api/profile", newProfile, false);
       form.reset(newProfile);
 
