@@ -1,15 +1,12 @@
-import { z } from "zod";
+import { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
+import IBaseRepository from "@/repositories/base.repository.supabase.interface";
 
-import IBaseRepository from "../../../repositories/base.repository.interface";
-import { Todo } from "@prisma/client";
-import { TodoSchema } from "@/app/dashboard/todos/schema";
-import prisma from "@/lib/db";
-
-export default class TodoRepository extends IBaseRepository<
-  Todo,
-  z.infer<typeof TodoSchema>
+export class TodoRepository extends IBaseRepository<
+  Tables<"todo">,
+  TablesInsert<"todo">,
+  TablesUpdate<"todo">
 > {
   constructor() {
-    super(prisma.todo);
+    super("todo");
   }
 }

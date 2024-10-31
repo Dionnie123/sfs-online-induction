@@ -17,7 +17,8 @@ import {
 import UpdateTodo from "../action-buttons/update";
 import DeleteTodo from "../action-buttons/delete";
 import { Checkbox } from "@/components/ui/checkbox";
-export const columns: ColumnDef<Todo>[] = [
+import { Tables } from "@/lib/supabase";
+export const columns: ColumnDef<Tables<"todo">>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {

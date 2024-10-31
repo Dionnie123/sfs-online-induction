@@ -16,9 +16,10 @@ import {
 } from "@/app/dashboard/todos/action";
 import { CheckboxInput, TextAreaInput, TextInput } from "@/lib/form-helpers";
 import { TodoSchema } from "../schema";
+import { Tables } from "@/lib/supabase";
 
 type TodoFormProps = {
-  todo?: Todo;
+  todo?: Tables<"todo">;
   onSubmit: () => void;
 };
 
@@ -42,7 +43,7 @@ export default function TodoForm({ todo, onSubmit }: TodoFormProps) {
   const _onSubmit = async (values: FormSchema) => {
     try {
       if (todo === undefined) {
-        await createTodoAction(values);
+        // await createTodoAction(values);
       } else {
         await updateTodoAction(todo.id, values);
       }

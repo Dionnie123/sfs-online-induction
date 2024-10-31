@@ -115,13 +115,13 @@ export function TextAreaInput<
           </FormLabel>
           <FormControl>
             <Textarea
-              placeholder={`Enter ${
-                name.charAt(0).toUpperCase() + name.slice(1)
-              }`}
-              autoComplete="off"
               {...rest}
               {...field}
-              value={field.value ?? ""}
+              autoComplete="off"
+              placeholder={`Enter ${
+                name.charAt(0).toUpperCase() + name.slice(1) || ""
+              }`}
+              value={field.value || ""}
               onBlur={(e) => {
                 field.onBlur();
                 onBlur?.(e);

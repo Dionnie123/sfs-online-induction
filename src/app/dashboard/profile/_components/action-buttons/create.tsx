@@ -30,7 +30,7 @@ export default function CreateProfile() {
             Create Profile
           </DialogTitle>
           <Description className="sr-only">Create profile.</Description>
-          <ProfileForm onSubmit={handleOnSubmit} />
+          <ProfileForm profile={null} onSubmit={handleOnSubmit} />
         </DialogContent>
       </Dialog>
     </div>

@@ -1,37 +1,22 @@
 "use server";
 
-import { TodoSchema } from "@/app/dashboard/todos/schema";
-import prisma from "@/lib/db";
-import TodoRepository from "@/app/dashboard/todos/repository";
 import { createClient } from "@/utils/supabase/server";
-import { Todo } from "@prisma/client";
-import { z } from "zod";
+import { TodoRepository } from "./repository";
+import { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
 
 const todoRepository = new TodoRepository();
 
-export async function getAllTodosAction(): Promise<Todo[]> {
+export async function getAllTodosAction(): Promise<Tables<"todo">[]> {
   try {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
     const user = data?.user;
 
-    const profile = await prisma.profile.findUnique({
-      where: { id: user?.id },
-    });
-
     if (!user) {
       throw Error("Unauthenticated. Please login.");
     }
-    let todos: Todo[] = [];
-    if (profile?.role == "admin") {
-      todos = await todoRepository.getAll();
-    } else if (profile?.role == "user") {
-      todos = await todoRepository.getAll({
-        where: {
-          userId: user.id!,
-        },
-      });
-    }
+    let todos: Tables<"todo">[] = [];
+    todos = await todoRepository.getAll();
 
     return todos;
   } catch (error) {
@@ -39,7 +24,7 @@ export async function getAllTodosAction(): Promise<Todo[]> {
   }
 }
 
-export async function createTodoAction(value: z.infer<typeof TodoSchema>) {
+export async function createTodoAction(value: TablesInsert<"todo">) {
   try {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
@@ -47,10 +32,7 @@ export async function createTodoAction(value: z.infer<typeof TodoSchema>) {
     if (!user) {
       throw Error("Unauthenticated. Please login.");
     }
-    const todo = await todoRepository.create({
-      ...value,
-      userId: user.id,
-    });
+    const todo = await todoRepository.create(value);
     return todo;
   } catch (error) {
     throw error;
@@ -59,7 +41,7 @@ export async function createTodoAction(value: z.infer<typeof TodoSchema>) {
 
 export async function updateTodoAction(
   id: string,
-  value: z.infer<typeof TodoSchema>
+  value: TablesUpdate<"todo">
 ) {
   try {
     const supabase = await createClient();

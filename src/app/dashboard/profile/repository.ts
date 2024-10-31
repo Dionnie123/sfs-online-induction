@@ -1,14 +1,12 @@
-import { z } from "zod";
-import { Profile } from "@prisma/client";
-import { ProfileSchema } from "@/app/dashboard/profile/schema";
-import prisma from "@/lib/db";
-import IBaseRepository from "@/repositories/base.repository.interface";
+import { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
+import IBaseRepository from "@/repositories/base.repository.supabase.interface";
 
-export default class ProfileRepository extends IBaseRepository<
-  Profile,
-  z.infer<typeof ProfileSchema>
+export class ProfileRepository extends IBaseRepository<
+  Tables<"profile">,
+  TablesInsert<"profile">,
+  TablesUpdate<"profile">
 > {
   constructor() {
-    super(prisma.profile);
+    super("profile");
   }
 }

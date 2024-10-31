@@ -8,7 +8,7 @@ const MB_BYTES = 1000000; // Number of bytes in a megabyte
 const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png"];
 
 // Updated image schema to allow for optional files
-const imageSchema = z.union([
+const ImageSchema = z.union([
   z.instanceof(File).superRefine((f, ctx) => {
     // Validate mime type
 
@@ -34,10 +34,9 @@ const imageSchema = z.union([
     }
   }),
   z.null(),
-  z.undefined(), // Allow undefined for optional file
 ]);
 
 // You can also use z.null() if you want to allow null as well:
 // const imageSchema = z.union([z.instanceof(File), z.null(), z.undefined()]);
 
-export { imageSchema };
+export { ImageSchema };

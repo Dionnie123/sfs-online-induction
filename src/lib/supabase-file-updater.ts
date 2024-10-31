@@ -57,6 +57,7 @@ export async function supabaseUpdateFile({
     // Return success with new file URL
     return { success: true, fileUrl: newFileName };
   } catch (error) {
+    console.log("IMAGE UPLOAD ERROR" + error);
     return { success: false, error: error as Error };
   }
 }

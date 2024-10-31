@@ -7,21 +7,19 @@ import { z } from "zod";
 import LoadingButton from "@/components/loading-button";
 import { useState } from "react";
 import { mutate } from "swr";
-import { Profile } from "@prisma/client";
+
 import ErrorMessage from "@/components/error-message";
-import {
-  createProfileAction,
-  updateProfileAction,
-} from "@/app/dashboard/profile/action";
+import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { TextInput } from "@/lib/form-helpers";
 import { ProfileSchema } from "../../profile/schema";
 import { AvatarInput } from "./avatar-input";
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
 import { supabaseUpdateFile } from "@/lib/supabase-file-updater";
+import { Tables } from "@/lib/supabase";
 
 type ProfileFormProps = {
-  profile?: Profile;
+  profile: Tables<"profile"> | null;
   onSubmit?: () => void;
 };
 
@@ -34,7 +32,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     resolver: zodResolver(ProfileSchema),
     defaultValues: profile
       ? {
-          fullname: profile?.fullname ?? "",
+          fullname: profile?.fullname,
         }
       : undefined,
   });
@@ -43,8 +41,8 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     try {
       const supabase = createClient();
       let newProfile;
-      if (profile === undefined) {
-        newProfile = await createProfileAction(values);
+      if (profile === null) {
+        // newProfile = await createProfileAction(values);
       } else {
         const { fileUrl } = await supabaseUpdateFile({
           supabase: supabase,
@@ -53,17 +51,17 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           newFile: values.avatarFile ?? null,
           oldFileNameOnly: profile.avatarUrl,
         });
-
         values.avatarUrl = fileUrl;
+        values.avatarFile = null;
 
         newProfile = await updateProfileAction(profile.id, {
-          avatarUrl: values.avatarUrl,
           fullname: values.fullname,
+          avatarUrl: values.avatarUrl,
         });
+        console.log("NEW PROFILE" + JSON.stringify(newProfile));
       }
 
-      mutate("/api/profile", newProfile, false);
-      form.reset(newProfile);
+      mutate("/api/profile", [newProfile], false);
 
       if (onSubmit) {
         onSubmit();
@@ -78,6 +76,8 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-8">
+          <hr />
+
           <AvatarInput
             label="Profile image"
             control={form.control}
@@ -86,15 +86,10 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
           />
           <FormItem>
             <FormLabel className="space-y-1 leading-none">Email</FormLabel>
-            <Input readOnly disabled value={profile?.email ?? ""} />
+            <Input readOnly disabled value={profile?.email} />
           </FormItem>
 
-          <TextInput
-            label="Full name"
-            key={profile?.fullname}
-            control={form.control}
-            name="fullname"
-          />
+          <TextInput label="Full name" control={form.control} name="fullname" />
 
           <LoadingButton pending={form.formState.isSubmitting}>
             {profile ? "Update" : "Create"}

@@ -6,9 +6,13 @@ import { Todo } from "@prisma/client";
 import { DataTable } from "./datatable";
 import { columns } from "./columns";
 import { getAllTodosAction } from "@/app/dashboard/todos/action";
+import { Tables } from "@/lib/supabase";
 
 export default function TodoList() {
-  const { data: todos } = useSWR<Todo[]>("/api/todos", getAllTodosAction);
+  const { data: todos } = useSWR<Tables<"todo">[]>(
+    "/api/todos",
+    getAllTodosAction
+  );
 
   const todoList = todos || [];
 

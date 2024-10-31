@@ -1,16 +1,17 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { Profile } from "@prisma/client";
+
 import { z } from "zod";
 import { ProfileSchema } from "./schema";
-import ProfileRepository from "./repository";
+import { ProfileRepository } from "./repository";
+import { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
 
 const profileRepository = new ProfileRepository();
 
-export async function getAllProfilesAction(): Promise<Profile[]> {
+export async function getAllProfilesAction(): Promise<Tables<"profile">[]> {
   try {
-    let profiles: Profile[] = [];
+    let profiles: Tables<"profile">[] = [];
     profiles = await profileRepository.getAll();
 
     return profiles;
@@ -19,7 +20,7 @@ export async function getAllProfilesAction(): Promise<Profile[]> {
   }
 }
 
-export async function getProfileAction(): Promise<Profile | undefined> {
+export async function getProfileAction(): Promise<Tables<"profile"> | null> {
   try {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
@@ -31,13 +32,9 @@ export async function getProfileAction(): Promise<Profile | undefined> {
   }
 }
 
-export async function createProfileAction(
-  value: z.infer<typeof ProfileSchema>
-) {
+export async function createProfileAction(value: TablesInsert<"profile">) {
   try {
-    const profile = await profileRepository.create({
-      ...value,
-    });
+    const profile = await profileRepository.create(value);
     return profile;
   } catch (error) {
     throw error;
@@ -46,10 +43,11 @@ export async function createProfileAction(
 
 export async function updateProfileAction(
   id: string,
-  value: z.infer<typeof ProfileSchema>
+  value: TablesUpdate<"profile">
 ) {
   try {
-    const profile = await profileRepository.update(id, Object.assign(value));
+    const profile = await profileRepository.update(id, value);
+    console.log("SERVER ACTION UIPDATE");
     return profile;
   } catch (error) {
     throw error;

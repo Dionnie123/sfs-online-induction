@@ -2,15 +2,15 @@
 
 import useSWR from "swr";
 
-import { Profile } from "@prisma/client";
-import { getProfileAction } from "./action";
+import { getAllProfilesAction, getProfileAction } from "./action";
 import Loading from "@/components/loading";
 import ProfileForm from "./_components/form";
+import { Tables } from "@/lib/supabase";
 
 export default function ProfilePage() {
-  const { data: profile, isLoading } = useSWR<Profile | undefined>(
+  const { data: profile, isLoading } = useSWR<Tables<"profile">[] | null>(
     "/api/profile",
-    getProfileAction
+    getAllProfilesAction
   );
 
   return (
@@ -24,7 +24,12 @@ export default function ProfilePage() {
               Profile
             </h1>
           </div>
-          <ProfileForm profile={profile} />
+          <p>{JSON.stringify(profile)}</p>
+
+          <ProfileForm
+            key={"" + profile}
+            profile={profile != null ? profile[0] : null}
+          />
         </>
       )}
     </>

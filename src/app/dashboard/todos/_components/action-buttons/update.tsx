@@ -10,9 +10,10 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tables } from "@/lib/supabase";
 
 type UpdateTodoProps = {
-  defaultValues: Todo;
+  defaultValues: Tables<"todo">;
 };
 
 export default function UpdateTodo({ defaultValues }: UpdateTodoProps) {
