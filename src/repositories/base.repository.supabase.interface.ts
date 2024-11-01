@@ -21,6 +21,7 @@ export default abstract class IBaseRepository<RowType, InsertType, UpdateType> {
       .select("*")
       .eq("id", id)
       .maybeSingle<RowType | null>();
+
     return data;
   }
 
@@ -30,18 +31,18 @@ export default abstract class IBaseRepository<RowType, InsertType, UpdateType> {
       .insert([data])
       .select()
       .single<RowType | null>();
+
     return createdData;
   }
 
   async update(id: string, data: UpdateType): Promise<RowType | null> {
-    const { data: updatedData } = await supabase
+    const { data: updatedData, error } = await supabase
       .from(this.tableName)
       .update(data)
       .eq("id", id)
       .select()
       .single<RowType | null>();
 
-    console.log("UDPATED" + JSON.stringify(updatedData));
     return updatedData;
   }
 

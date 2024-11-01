@@ -31,7 +31,7 @@ export async function fetchImage(path: string) {
   const supabase = createClient();
   const { data, error } = await supabase.storage.from("avatars").download(path);
   if (error) throw error;
-  console.log(URL.createObjectURL(data));
+
   return URL.createObjectURL(data);
 }
 

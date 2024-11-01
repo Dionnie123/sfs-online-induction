@@ -7,7 +7,6 @@ import { z } from "zod";
 import LoadingButton from "@/components/loading-button";
 import { useState } from "react";
 import { mutate } from "swr";
-
 import ErrorMessage from "@/components/error-message";
 import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { TextInput } from "@/lib/form-helpers";
@@ -42,7 +41,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       const supabase = createClient();
       let newProfile;
       if (profile === null) {
-        // newProfile = await createProfileAction(values);
+        //newProfile = await createProfileAction(values );
       } else {
         const { fileUrl } = await supabaseUpdateFile({
           supabase: supabase,
@@ -53,12 +52,10 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
         });
         values.avatarUrl = fileUrl;
         values.avatarFile = null;
+        delete values.avatarFile;
 
-        newProfile = await updateProfileAction(profile.id, {
-          fullname: values.fullname,
-          avatarUrl: values.avatarUrl,
-        });
-        console.log("NEW PROFILE" + JSON.stringify(newProfile));
+        console.log(values);
+        newProfile = await updateProfileAction(profile.id, values);
       }
 
       mutate("/api/profile", [newProfile], false);

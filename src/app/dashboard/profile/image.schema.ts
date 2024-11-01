@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 
-const MB_BYTES = 1000000; // Number of bytes in a megabyte
+const MB_BYTES = 200000; // Number of bytes in a megabyte
 
 // Accepted mime types
 const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png"];

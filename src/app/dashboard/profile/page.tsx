@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { getAllProfilesAction, getProfileAction } from "./action";
+import { getAllProfilesAction } from "./action";
 import Loading from "@/components/loading";
 import ProfileForm from "./_components/form";
 import { Tables } from "@/lib/supabase";
@@ -24,12 +24,8 @@ export default function ProfilePage() {
               Profile
             </h1>
           </div>
-          <p>{JSON.stringify(profile)}</p>
 
-          <ProfileForm
-            key={"" + profile}
-            profile={profile != null ? profile[0] : null}
-          />
+          <ProfileForm profile={profile != null ? profile[0] : null} />
         </>
       )}
     </>
