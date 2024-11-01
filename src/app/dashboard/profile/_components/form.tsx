@@ -31,6 +31,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     resolver: zodResolver(ProfileSchema),
     defaultValues: profile
       ? {
+          email: profile?.email,
           fullname: profile?.fullname,
         }
       : undefined,
@@ -41,7 +42,6 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       const supabase = createClient();
       let newProfile;
       if (profile === null) {
-        //newProfile = await createProfileAction(values );
       } else {
         const { fileUrl } = await supabaseUpdateFile({
           supabase: supabase,
@@ -73,18 +73,13 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
       {globalError && <ErrorMessage error={globalError} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-8">
-          <hr />
-
           <AvatarInput
             label="Profile image"
             control={form.control}
             name="avatarFile"
             url={profile?.avatarUrl}
           />
-          <FormItem>
-            <FormLabel className="space-y-1 leading-none">Email</FormLabel>
-            <Input readOnly disabled value={profile?.email} />
-          </FormItem>
+          <TextInput readOnly disabled control={form.control} name="email" />
 
           <TextInput label="Full name" control={form.control} name="fullname" />
 

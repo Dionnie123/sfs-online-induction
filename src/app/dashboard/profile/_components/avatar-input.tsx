@@ -6,17 +6,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
-import { Avatar, AvatarProps } from "@files-ui/react";
+import { Avatar } from "@files-ui/react";
 import React from "react";
-import {
-  ComponentPropsWithoutRef,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { ComponentPropsWithoutRef, ReactNode, useState } from "react";
 import { FieldValues, FieldPath, ControllerProps } from "react-hook-form";
 import useSWR from "swr";
-import { cache, mutate } from "swr/_internal";
 
 type FileInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -31,7 +25,6 @@ export async function fetchImage(path: string) {
   const supabase = createClient();
   const { data, error } = await supabase.storage.from("avatars").download(path);
   if (error) throw error;
-
   return URL.createObjectURL(data);
 }
 
@@ -44,8 +37,9 @@ export function AvatarInput<
     isLoading,
     error,
   } = useSWR(url ? url : null, url ? () => fetchImage(url!) : null);
-  const [fileUrl, setFileUrl] = useState<string | undefined>(initialFileUrl);
+  const [fileUrl, setFileUrl] = useState<string | null>(initialFileUrl ?? null);
   const fallBackImage = "/avatar.jpg";
+
   return (
     <FormField
       control={control}
@@ -72,9 +66,9 @@ export function AvatarInput<
                 field.onChange(uploadedFile);
               }}
               src={
-                isLoading && !fileUrl
-                  ? fallBackImage
-                  : fileUrl ?? initialFileUrl ?? fallBackImage
+                isLoading || error
+                  ? fileUrl ?? fallBackImage
+                  : fileUrl ?? initialFileUrl
               }
               style={{ width: "200px", height: "200px", background: "grey" }}
             />
