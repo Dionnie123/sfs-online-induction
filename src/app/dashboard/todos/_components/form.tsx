@@ -7,16 +7,16 @@ import { z } from "zod";
 import LoadingButton from "@/components/loading-button";
 import { useState } from "react";
 import { mutate } from "swr";
-import { Todo } from "@prisma/client";
+
 import ErrorMessage from "@/components/error-message";
 
-import {
-  createTodoAction,
-  updateTodoAction,
-} from "@/app/dashboard/todos/action";
-import { CheckboxInput, TextAreaInput, TextInput } from "@/lib/form-helpers";
+import { updateTodoAction } from "@/app/dashboard/todos/action";
+
 import { TodoSchema } from "../schema";
 import { Tables } from "@/lib/supabase";
+import { CheckboxInput } from "@/lib/react-hook-form-helpers/checkbox-input";
+import { TextAreaInput } from "@/lib/react-hook-form-helpers/text-area-input";
+import { TextInput } from "@/lib/react-hook-form-helpers/text-input";
 
 type TodoFormProps = {
   todo?: Tables<"todo">;

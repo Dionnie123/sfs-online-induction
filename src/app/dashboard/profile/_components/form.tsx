@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, FormItem, FormLabel } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,13 +9,12 @@ import { useState } from "react";
 import { mutate } from "swr";
 import ErrorMessage from "@/components/error-message";
 import { updateProfileAction } from "@/app/dashboard/profile/action";
-import { TextInput } from "@/lib/form-helpers";
 import { ProfileSchema } from "../../profile/schema";
-import { AvatarInput } from "./avatar-input";
+import { AvatarInput } from "../../../../lib/react-hook-form-helpers/avatar-input";
 import { createClient } from "@/utils/supabase/client";
-import { Input } from "@/components/ui/input";
 import { supabaseUpdateFile } from "@/lib/supabase-file-updater";
 import { Tables } from "@/lib/supabase";
+import { TextInput } from "@/lib/react-hook-form-helpers/text-input";
 
 type ProfileFormProps = {
   profile: Tables<"profile"> | null;
