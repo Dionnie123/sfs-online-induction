@@ -1,6 +1,6 @@
 import { getProfileAction } from "@/actions/auth";
-import Quiz from "./quiz";
-import CoursePage from "./course";
+import Quiz from "./_home/quiz";
+import CoursePage from "./_home/course";
 
 export default async function DashboardPage() {
   const profile = await getProfileAction();

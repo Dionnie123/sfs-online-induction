@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import RegisterForm from "./form";
+import RegisterForm from "./_common/form";
 
 export default function RegisterPage() {
   return (

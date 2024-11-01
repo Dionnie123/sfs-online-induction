@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import LogoutButton from "@/app/logout/signout-form";
+import LogoutButton from "@/app/dashboard/_components/signout-form";
 
 export default function AccountOptions() {
   return (

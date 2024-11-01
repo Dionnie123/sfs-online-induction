@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Todo } from "@prisma/client";
 import { DataTable } from "./datatable";
 import { columns } from "./columns";
-import { getAllTodosAction } from "@/app/dashboard/todos/action";
+import { getAllTodosAction } from "@/app/dashboard/todos/_common/action";
 import { Tables } from "@/lib/supabase-helpers/supabase";
 
 export default function TodoList() {

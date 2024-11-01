@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { getAllProfilesAction } from "./action";
+import { getAllProfilesAction } from "./_common/action";
 import Loading from "@/components/loading";
 import ProfileForm from "./_components/form";
 import { Tables } from "@/lib/supabase-helpers/supabase";

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { handleLogout } from "./action";
+import { handleLogout } from "../_common/action";
 import { redirect } from "next/navigation";
 import { useSWRConfig } from "swr";
 

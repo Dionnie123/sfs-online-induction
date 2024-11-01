@@ -10,9 +10,9 @@ import { mutate } from "swr";
 
 import ErrorMessage from "@/components/error-message";
 
-import { updateTodoAction } from "@/app/dashboard/todos/action";
+import { updateTodoAction } from "@/app/dashboard/todos/_common/action";
 
-import { TodoSchema } from "../schema";
+import { TodoSchema } from "../_common/schema";
 import { Tables } from "@/lib/supabase-helpers/supabase";
 import { CheckboxInput } from "@/lib/react-hook-form-helpers/checkbox-input";
 import { TextAreaInput } from "@/lib/react-hook-form-helpers/text-area-input";

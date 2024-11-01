@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteTodoAction } from "@/app/dashboard/todos/action";
+import { deleteTodoAction } from "@/app/dashboard/todos/_common/action";
 import React from "react";
 import { mutate } from "swr";
 
