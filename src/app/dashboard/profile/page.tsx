@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { getAllProfilesAction } from "./action";
 import Loading from "@/components/loading";
 import ProfileForm from "./_components/form";
-import { Tables } from "@/lib/supabase";
+import { Tables } from "@/lib/supabase-helpers/supabase";
 
 export default function ProfilePage() {
   const { data: profile, isLoading } = useSWR<Tables<"profile">[] | null>(

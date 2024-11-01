@@ -1,7 +1,7 @@
 "use server";
 
 import { ProfileRepository } from "./repository";
-import { Tables, TablesUpdate } from "@/lib/supabase";
+import { Tables, TablesUpdate } from "@/lib/supabase-helpers/supabase";
 
 const profileRepository = new ProfileRepository();
 

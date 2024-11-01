@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Tables } from "@/lib/supabase";
+import { Tables } from "@/lib/supabase-helpers/supabase";
 
 type UpdateTodoProps = {
   defaultValues: Tables<"todo">;

@@ -12,8 +12,8 @@ import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { ProfileSchema } from "../../profile/schema";
 import { AvatarInput } from "../../../../lib/react-hook-form-helpers/avatar-input";
 import { createClient } from "@/utils/supabase/client";
-import { supabaseUpdateFile } from "@/lib/supabase-file-updater";
-import { Tables } from "@/lib/supabase";
+import { supabaseUpdateFile } from "@/lib/supabase-helpers/supabase-file-updater";
+import { Tables } from "@/lib/supabase-helpers/supabase";
 import { TextInput } from "@/lib/react-hook-form-helpers/text-input";
 
 type ProfileFormProps = {

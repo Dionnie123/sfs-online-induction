@@ -2,7 +2,11 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { TodoRepository } from "./repository";
-import { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
+import {
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from "@/lib/supabase-helpers/supabase";
 
 const todoRepository = new TodoRepository();
 

@@ -6,7 +6,7 @@ import { Todo } from "@prisma/client";
 import { DataTable } from "./datatable";
 import { columns } from "./columns";
 import { getAllTodosAction } from "@/app/dashboard/todos/action";
-import { Tables } from "@/lib/supabase";
+import { Tables } from "@/lib/supabase-helpers/supabase";
 
 export default function TodoList() {
   const { data: todos } = useSWR<Tables<"todo">[]>(

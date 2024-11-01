@@ -1,4 +1,9 @@
-import { Database, Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
+import {
+  Database,
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from "@/lib/supabase-helpers/supabase";
 
 import { createClient } from "@/utils/supabase/server";
 
