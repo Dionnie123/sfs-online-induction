@@ -4,7 +4,7 @@ import Sidebar from "./sidebar";
 
 import AccountOptions from "./account-options";
 import Drawer from "./drawer";
-
+import { Toaster } from "react-hot-toast";
 export const description =
   "A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.";
 
@@ -21,6 +21,7 @@ export function Dashboard({ children }: { children: React.ReactNode }) {
           <AccountOptions />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          <Toaster position="bottom-center" />
           {children}
         </main>
       </div>

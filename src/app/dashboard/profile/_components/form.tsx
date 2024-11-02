@@ -15,7 +15,7 @@ import { createClient } from "@/lib/supabase-helpers/client";
 import { supabaseUpdateFile } from "@/lib/supabase-helpers/supabase-file-updater";
 import { Tables } from "@/lib/supabase-helpers/supabase";
 import { TextInput } from "@/lib/react-hook-form-helpers/text-input";
-
+import { toast } from "react-hot-toast";
 type ProfileFormProps = {
   profile: Tables<"profile"> | null;
   onSubmit?: () => void;
@@ -55,6 +55,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
 
         console.log(values);
         newProfile = await updateProfileAction(profile.id, values);
+        toast.success("Profile Updated");
       }
 
       mutate("/api/profile", [newProfile], false);
