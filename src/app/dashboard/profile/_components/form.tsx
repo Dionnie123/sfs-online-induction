@@ -11,7 +11,7 @@ import ErrorMessage from "@/components/error-message";
 import { updateProfileAction } from "@/app/dashboard/profile/_common/action";
 import { ProfileSchema } from "../_common/schema";
 import { AvatarInput } from "../../../../lib/react-hook-form-helpers/avatar-input";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase-helpers/client";
 import { supabaseUpdateFile } from "@/lib/supabase-helpers/supabase-file-updater";
 import { Tables } from "@/lib/supabase-helpers/supabase";
 import { TextInput } from "@/lib/react-hook-form-helpers/text-input";

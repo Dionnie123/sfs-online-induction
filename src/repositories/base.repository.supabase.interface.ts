@@ -5,7 +5,7 @@ import {
   TablesUpdate,
 } from "@/lib/supabase-helpers/supabase";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase-helpers/server";
 
 const supabase = await createClient();
 export default abstract class IBaseRepository<RowType, InsertType, UpdateType> {

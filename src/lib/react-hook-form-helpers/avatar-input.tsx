@@ -5,7 +5,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase-helpers/client";
 import { Avatar } from "@files-ui/react";
 import React from "react";
 import { ComponentPropsWithoutRef, ReactNode, useState } from "react";

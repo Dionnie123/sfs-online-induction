@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase-helpers/server";
 import { RegisterSchema } from "./register.schema";
 
 export async function handleRegister(value: any) {
